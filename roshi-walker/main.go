@@ -46,6 +46,7 @@ func main() {
 		prometheusNamespace     = flag.String("prometheus.namespace", "roshiwalker", "Prometheus key namespace, excluding trailing punctuation")
 		prometheusMaxSummaryAge = flag.Duration("prometheus.max.summary.age", 10*time.Second, "Prometheus max age for instantaneous histogram data")
 		httpAddress             = flag.String("http.address", ":6060", "HTTP listen address (profiling/metrics endpoints only)")
+		walkInterval            = flag.Duration("walk.interval", 1000*time.Millisecond, "interval of walking")
 	)
 	flag.Parse()
 	log.SetOutput(os.Stdout)
@@ -124,6 +125,7 @@ func main() {
 		if *once {
 			break
 		}
+		time.Sleep(*walkInterval)
 	}
 }
 
