@@ -119,13 +119,14 @@ func main() {
 
 	// Perform the walk.
 	defer func(t time.Time) { log.Printf("total walk complete, %s", time.Since(t)) }(time.Now())
-	for {
+	ticker := time.NewTicker(*walkInterval)
+	defer ticker.Stop()
+	for range ticker.C {
 		src := scan(clusters, *batchSize, *scanLogInterval) // new key set
 		walkOnce(dst, bucket, src, *maxSize, instr)
 		if *once {
 			break
 		}
-		time.Sleep(*walkInterval)
 	}
 }
 
